@@ -9,7 +9,7 @@ export class App extends Component{
     render() {
         return (
             <View>
-                {"Hello World"}
+                {"Hello World Init"}
             </View>
     );
     }
