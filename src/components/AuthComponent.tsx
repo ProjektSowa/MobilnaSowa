@@ -1,21 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, Button, TextInput, View} from 'react-native';
 
-interface AuthState {
-    emailPlaceholder: string
-    passwordPlaceholder: string
-}
-interface AuthProps {
-
-}
+interface AuthState {}
+interface AuthProps {}
 
 export default class AuthComponent extends Component<AuthProps, AuthState>{
     constructor(props : AuthProps) {
         super(props)
-        this.state = {
-            emailPlaceholder: 'Adres email',
-            passwordPlaceholder: 'Hasło'
-        }
     }
 
     render() {
@@ -24,6 +15,7 @@ export default class AuthComponent extends Component<AuthProps, AuthState>{
             <Text>Zaloguj się</Text>
             <TextInput style={styles.input} placeholder='Adres Email'/>
             <TextInput style={styles.input} placeholder='Hasło'/>
+            <Button title={'Zaloguj'} onPress={() => { alert('click') }}></Button>
         </View>
     );
     }
