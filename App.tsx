@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
-
+import {StyleSheet, Text, View} from 'react-native';
+import AuthComponent from './src/components/AuthComponent';
 export class App extends Component{
     constructor(props : any) {
         super(props)
@@ -8,8 +8,8 @@ export class App extends Component{
 
     render() {
         return (
-            <View>
-                {"Hello World Init"}
+            <View style={styles.container}>
+                <AuthComponent></AuthComponent>
             </View>
     );
     }
