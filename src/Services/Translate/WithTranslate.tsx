@@ -1,9 +1,10 @@
 import * as React from "react";
-import { NativeModules, Platform } from 'react-native'
+import {connect} from "react-redux";
 import {languages} from "./Translate";
 
+
 export interface IWithTranslationProps{
-    lang? : any
+    lang : any
 }
 
 function getDisplayName(WrappedComponent : any){
@@ -11,24 +12,20 @@ function getDisplayName(WrappedComponent : any){
 }
 
 
-export function withTranslation<P>(){
+export default function withTranslation<P>(){
+    const mapStateToProps = (state: any, ownProps: any): IWithTranslationProps => ({
+        lang: state.lang.lang
+    })
 
     return (InnerComponent: any)=> {
         class C extends React.Component<P & IWithTranslationProps, any> {
             render(){
-                let locale = "";
-                if(Platform.OS == "android"){
-                    locale = NativeModules.I18nManager.localeIdentifier
-                } else if(Platform.OS == "ios"){
-                    locale = NativeModules.SettingsManager.settings.AppleLocale
-                }
-
-                let {...rest} = this.props as any;
+                let {lang, ...rest} = this.props as any;
                 let componentName = getDisplayName(InnerComponent)
-                return <InnerComponent lang={languages[locale][componentName]} {...rest}/>
+                return <InnerComponent lang={languages[lang][componentName]} {...rest}/>
             }
         }
         // @ts-ignore
-        return C
+        return connect(mapStateToProps)(C);
     }
 }
