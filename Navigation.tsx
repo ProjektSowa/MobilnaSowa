@@ -1,5 +1,5 @@
 import {createStackNavigator} from "react-navigation";
-import AuthComponent from "./src/components/AuthComponent";
+import AuthComponent from "./src/components/AuthComponent/AuthComponent";
 import SecondView from "./src/components/secondview";
 
 const RootStack = createStackNavigator({
