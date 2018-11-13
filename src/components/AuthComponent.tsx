@@ -9,6 +9,8 @@ export default class AuthComponent extends Component<AuthProps, AuthState>{
         super(props)
     }
 
+
+
     render() {
         return (
         <View style={styles.container}>
