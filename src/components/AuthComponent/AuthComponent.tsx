@@ -118,7 +118,7 @@ export class AuthComponent extends React.Component<AuthProps, AuthState>{
 
         if(isLogged){
             this.props.navigation.navigate('Second')
-            return <></>
+            return <View/>
         } else {
             return (
                 <ImageBackground style={styles.background} source={require('../../assets/images/psw-bg.jpg')}>

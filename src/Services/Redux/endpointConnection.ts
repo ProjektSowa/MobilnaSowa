@@ -3,37 +3,53 @@ import {store} from "./store";
 
 let api_path = "http://testsowa.pswbp.pl/capi.php";
 
-export function sendRequest(requestData : any){
+export function sendRequest(requestData : any[]){
     return execute(
-        axios.post(api_path, requestData)
+        axios.post(api_path, extendRequestWithAuth(requestData)),
+        requestData.map(request => request[0])
     )
 }
 
 export function authenticate(login : string, password: string){
     return execute(
-        axios.post(api_path, extendRequestWithAuth({
-            exec : ["AccountLink", [login, password, login, login]]
-        }))
+        axios.post(api_path, extendRequestWithAuth(
+            ["AccountLink", [login, password, login, login]]
+        )),
+        ["AccountLink"]
     )
 }
 
-function execute(requestPromise: Promise<any>): Promise<any> {
+function execute(requestPromise: Promise<any>, requestName : string[]): Promise<any> {
     return requestPromise
-        .then(response => {
-            return Promise.resolve(response.data)
+        .then((response : any)  => {
+            let temp : {
+                [x: string]: any
+            } = {}
+
+            response.data.forEach((value, index) => {
+                temp[requestName[index]] = value.data
+            })
+
+            return Promise.resolve(temp)
         })
-        .catch(({response})=>{
-            if(response.status == 403) {
-                alert("Bark Autentykacji")
-                // store.dispatch(()=> {})
-            }
+        .catch((error)=>{
+
+            // if(response.status == 403) {
+            //     alert("Bark Autentykacji")
+            //     // store.dispatch(()=> {})
+            // }
         })
 
 }
 
-function extendRequestWithAuth(requestData?: {exec : any[]}) {
-    return {
-        ...requestData,
-        auth: [1,"urn:uuid:4dd12e7a-7572-4829-b0fe-e13fef752fda","#iqvbW!JhHch+TW._(+z","42699@lic528.sowa"]
+function extendRequestWithAuth(requestData: any[]) {
+    let request = {
+
+        auth: [1,"urn:uuid:4dd12e7a-7572-4829-b0fe-e13fef752fda","#iqvbW!JhHch+TW._(+z","42699@lic528.sowa"],
+        exec: [
+            ...requestData,
+        ]
     }
+    console.log(request);
+    return request
 }

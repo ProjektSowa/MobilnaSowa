@@ -16,7 +16,9 @@
     "react-redux": "^5.1.0",
     "react-test-renderer": "16.5.0",
     "redux": "^4.0.1",
-    "redux-promise-middleware": "^5.1.1"
+    "redux-promise-middleware": "^5.1.1",
+    "ramda": "^0.25.0"
+
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
