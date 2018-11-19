@@ -22,13 +22,24 @@ export function authenticate(login : string, password: string){
 function execute(requestPromise: Promise<any>, requestName : string[]): Promise<any> {
     return requestPromise
         .then((response : any)  => {
+            console.log('execute response');
+            console.log(response.data);
+
             let temp : {
                 [x: string]: any
             } = {}
 
+            console.log("temp1");
+            console.log(temp);
+            console.log("temp1 end");
+
             response.data.forEach((value, index) => {
                 temp[requestName[index]] = value.data
             })
+
+            console.log("temp2");
+            console.log(temp);
+            console.log("temp2 end");
 
             return Promise.resolve(temp)
         })
@@ -50,6 +61,8 @@ function extendRequestWithAuth(requestData: any[]) {
             ...requestData,
         ]
     }
+
+    console.log('extendRequestWithAuth')
     console.log(request);
     return request
 }

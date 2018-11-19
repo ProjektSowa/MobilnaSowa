@@ -30,11 +30,11 @@ export default class SearchComponent extends Component <Props, {records : []}>{
         let exec = [
             [
                 "RetrievePage",
-                [this.permalink, pageNr, "json", "marc21"]
+                [this.permalink, pageNr, "json", "loans"]
             ],
             [
                 "RetrievePage",
-                [this.permalink, pageNr, "json", "loans"]
+                [this.permalink, pageNr, "json", "marc21"]
             ]
         ];
         console.log("wysyłam request")
