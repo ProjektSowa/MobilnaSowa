@@ -14,104 +14,33 @@ export default class SearchComponent extends Component <Props, {records : []}>{
         this.state = {records: []}
     }
     onButtonPressed = async () => {
-        // console.log("Kliknięto button")
         await this.getWordPermaLink()
-        // console.log("permalink " + this.permalink)
-        // await this.retreivePage()
-        // console.log("records: " + this.state.records)
+        await this.retreivePage()
     }
 
     getWordPermaLink = async () => {
-        console.log(await sendRequest([
-            [ "GetWordsPermalink",[["analiza matematyczna 2", "gewert"]]],
-            [ "AccountCheck", ["testsowa@pswbp.pl"]]
-        ]));
-        // alert("get word permalink")
-        // await fetch('http://testsowa.pswbp.pl/capi.php', {
-        //     method: 'POST',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         "auth": [
-        //             1,
-        //             "urn:uuid:4dd12e7a-7572-4829-b0fe-e13fef752fda",
-        //             "#iqvbW!JhHch+TW._(+z",
-        //             "42699@lic528.sowa"
-        //         ],
-        //         "exec": [
-        //             [
-        //                 "GetWordsPermalink",
-        //                 [["analiza matematyczna 2","gewert"]]
-        //             ]
-        //         ]
-        //     }),
-        // })
-        //     .then((response) => {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok.')
-        //         }
-        //
-        //         console.log('mam permalink')
-        //
-        //         return response.json()
-        //     })
-        //     .then((responseJson) => {
-        //         if (responseJson[0].status === 200) {
-        //             this.permalink = responseJson[0].data
-        //         }
-        //         else
-        //             alert('Zły login lub hasło')
-        //     })
-        //     .catch((error) => {
-        //         // alert("Mamy błędy")
-        //         console.log(error)
-        //     })
+        let response = await sendRequest([
+            [ "GetWordsPermalink",[["analiza matematyczna 2", "gewert"]]]
+        ]);
+        this.permalink = response.GetWordsPermalink;
+
     }
 
     retreivePage = async (pageNr : number = 1) => {
-        await fetch('http://testsowa.pswbp.pl/capi.php', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "auth": [
-                    1,
-                    "urn:uuid:4dd12e7a-7572-4829-b0fe-e13fef752fda",
-                    "#iqvbW!JhHch+TW._(+z",
-                    "42699@lic528.sowa"
-                ],
-                "exec": [
-                    [
-                        "RetrievePage",
-                        [this.permalink, pageNr, "json", "loans"]
-                    ]
-                ]
-            }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok.')
-                }
-                console.log("oddaję stronę")
-                return response.json()
-            })
-            .then((responseJson) => {
-                if (responseJson[0].status === 200) {
-                    this.records = responseJson[0]
-                    this.setState({records : responseJson[0].data})
-                }
-                else
-                    console.log()
-                    // alert('Zły login lub hasło')
-            })
-            .catch((error) => {
-                //alert("Mamy błędy")
-                console.log(error)
-            })
+        let exec = [
+            [
+                "RetrievePage",
+                [this.permalink, pageNr, "json", "marc21"]
+            ],
+            [
+                "RetrievePage",
+                [this.permalink, pageNr, "json", "loans"]
+            ]
+        ];
+        console.log("wysyłam request")
+        let response = await sendRequest(exec)
+        console.log(response)
+
     }
 
     render() {

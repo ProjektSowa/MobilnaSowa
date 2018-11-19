@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import RootStack from './Navigation'
 import {store} from "./src/Services/Redux/store";
 import {Provider} from "react-redux";
+import SearchComponent from "./src/components/SearchComponent";
 export class App extends Component{
     constructor(props : any) {
         super(props)
@@ -10,11 +11,9 @@ export class App extends Component{
 
     render() {
         return (
-            <Provider store={store}>
-                <View style={styles.container}>
-                    <RootStack/>
-                </View>
-            </Provider>
+            <View>
+                <SearchComponent/>
+            </View>
     );
     }
 }
