@@ -22,24 +22,21 @@ export function authenticate(login : string, password: string){
 function execute(requestPromise: Promise<any>, requestName : string[]): Promise<any> {
     return requestPromise
         .then((response : any)  => {
-            console.log('execute response');
-            console.log(response.data);
-
             let temp : {
                 [x: string]: any
             } = {}
 
-            console.log("temp1");
-            console.log(temp);
-            console.log("temp1 end");
+            response.data.forEach((value :any, index: any) => {
 
-            response.data.forEach((value, index) => {
-                temp[requestName[index]] = value.data
+                if( temp[requestName[index]]) {
+                    temp[requestName[index]] = [
+                        ...temp[requestName[index]],
+                        value.data
+                    ]
+                } else {
+                    temp[requestName[index]] = [value.data]
+                }
             })
-
-            console.log("temp2");
-            console.log(temp);
-            console.log("temp2 end");
 
             return Promise.resolve(temp)
         })
@@ -57,12 +54,9 @@ function extendRequestWithAuth(requestData: any[]) {
     let request = {
 
         auth: [1,"urn:uuid:4dd12e7a-7572-4829-b0fe-e13fef752fda","#iqvbW!JhHch+TW._(+z","42699@lic528.sowa"],
-        exec: [
-            ...requestData,
-        ]
-    }
+        exec: [...requestData]
 
-    console.log('extendRequestWithAuth')
-    console.log(request);
+    }
+    console.log("request", request);
     return request
 }

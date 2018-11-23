@@ -7,7 +7,6 @@ type Props = {}
 export default class SearchComponent extends Component <Props, {records : []}>{
 
     permalink : string = ""
-    records = []
 
     constructor(props : Props) {
         super(props);
@@ -22,22 +21,19 @@ export default class SearchComponent extends Component <Props, {records : []}>{
         let response = await sendRequest([
             [ "GetWordsPermalink",[["analiza matematyczna 2", "gewert"]]]
         ]);
-        this.permalink = response.GetWordsPermalink;
+        this.permalink = response.GetWordsPermalink[0];
 
     }
 
     retreivePage = async (pageNr : number = 1) => {
         let exec = [
             [
-                "RetrievePage",
-                [this.permalink, pageNr, "json", "loans"]
+                "RetrievePage",[this.permalink, pageNr, "json", "loans"]
             ],
             [
-                "RetrievePage",
-                [this.permalink, pageNr, "json", "marc21"]
+                "RetrievePage",[this.permalink, pageNr, "json", "marc21"]
             ]
         ];
-        console.log("wysyłam request")
         let response = await sendRequest(exec)
         console.log(response)
 
