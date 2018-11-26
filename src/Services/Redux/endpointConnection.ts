@@ -41,7 +41,7 @@ function execute(requestPromise: Promise<any>, requestName : string[]): Promise<
             return Promise.resolve(temp)
         })
         .catch((error)=>{
-
+            console.log('error: ' + error)
             // if(response.status == 403) {
             //     alert("Bark Autentykacji")
             //     // store.dispatch(()=> {})

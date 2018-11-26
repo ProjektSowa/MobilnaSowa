@@ -7,20 +7,25 @@ type Props = {}
 export default class SearchComponent extends Component <Props, {records : []}>{
 
     permalink : string = ""
+    searchingPhrase : string = ""
 
     constructor(props : Props) {
         super(props);
         this.state = {records: []}
     }
     onButtonPressed = async () => {
-        await this.getWordPermaLink()
+        let keyWords = this.searchingPhrase.split(/\s+/);
+        console.log('keyWords')
+        console.log(keyWords)
+        await this.getWordPermaLink(keyWords)
         await this.retreivePage()
     }
 
-    getWordPermaLink = async () => {
+    getWordPermaLink = async (keyWords : Array<any>) => {
         let response = await sendRequest([
-            [ "GetWordsPermalink",[["analiza matematyczna 2", "gewert"]]]
+            [ "GetWordsPermalink",[keyWords]]
         ]);
+        console.log('otrzymałem odpowiedz: ' + response);
         this.permalink = response.GetWordsPermalink[0];
 
     }
@@ -43,7 +48,8 @@ export default class SearchComponent extends Component <Props, {records : []}>{
 
         return (
             <View style={styles.container}>
-                <TextInput style={styles.input} placeholder='Tytuł, autor'/>
+                <TextInput style={styles.input} placeholder='Tytuł, autor'
+                           onChangeText={(text) => this.searchingPhrase = text}/>
                 <View style={styles.button}>
                     <Button title={'Szukaj'} onPress={() => { this.onButtonPressed() }}></Button>
                 </View>
