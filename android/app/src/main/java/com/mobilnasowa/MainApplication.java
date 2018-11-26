@@ -1,4 +1,4 @@
-package com.enginneringprojectmobile;
+package com.mobilnasowa;
 
 import android.app.Application;
 
