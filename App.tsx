@@ -1,12 +1,22 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Button, StyleSheet, View} from 'react-native';
 import RootStack from './Navigation'
 import {store} from "./src/Services/Redux/store";
 import {Provider} from "react-redux";
-export class App extends Component{
+import SearchComponent from "./src/components/SearchComponent";
+import {NavigationScreenProp} from "react-navigation";
+import HomeComponent from "./src/components/HomeComponent/HomeComponent";
+
+interface NavigateProps {
+    navigation: NavigationScreenProp<any, any>
+}
+
+class App extends Component<NavigateProps, any>{
     constructor(props : any) {
         super(props)
+        console.log(props);
     }
+
     render() {
         return (
             <Provider store={store}>
@@ -17,6 +27,9 @@ export class App extends Component{
     );
     }
 }
+
+export default App;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
