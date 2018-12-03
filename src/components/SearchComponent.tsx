@@ -1,24 +1,33 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, Button, TextInput, View, FlatList, ScrollViewComponent} from 'react-native';
+import {StyleSheet, Text, TextInput, View, FlatList, ScrollViewComponent} from 'react-native';
 import {sendRequest} from "../Services/Redux/endpointConnection";
+import {SearchBar, Button, Icon} from "react-native-elements";
 
 type Props = {}
 
-export default class SearchComponent extends Component <Props, {records : []}>{
+export default class SearchComponent extends Component <Props, {records : [], isDisSearchingButton: true}>{
 
     permalink : string = ""
     searchingPhrase : string = ""
+    isDisSearchingButton : boolean = false
 
     constructor(props : Props) {
-        super(props);
-        this.state = {records: []}
+        super(props)
+        this.state = {records : [], isDisSearchingButton: true}
     }
     onButtonPressed = async () => {
-        let keyWords = this.searchingPhrase.split(/\s+/);
-        console.log('keyWords')
-        console.log(keyWords)
-        await this.getWordPermaLink(keyWords)
-        await this.retreivePage()
+        this.setState({isDisSearchingButton: true})
+        if (this.searchingPhrase === "") {
+            alert("Złe dane wejściowe")
+        }
+        else {
+            let keyWords = this.searchingPhrase.split(/\s+/);
+            console.log('keyWords')
+            console.log(keyWords)
+            await this.getWordPermaLink(keyWords)
+            await this.retreivePage()
+        }
+        this.isDisSearchingButton = false
     }
 
     getWordPermaLink = async (keyWords : Array<any>) => {
@@ -26,6 +35,7 @@ export default class SearchComponent extends Component <Props, {records : []}>{
             [ "GetWordsPermalink",[keyWords]]
         ]);
         console.log('otrzymałem odpowiedz: ' + response);
+        console.log(response);
         this.permalink = response.GetWordsPermalink[0];
 
     }
@@ -47,50 +57,22 @@ export default class SearchComponent extends Component <Props, {records : []}>{
     render() {
 
         return (
-            <View style={styles.container}>
-                <TextInput style={styles.input} placeholder='Tytuł, autor'
-                           onChangeText={(text) => this.searchingPhrase = text}/>
-                <View style={styles.button}>
-                    <Button title={'Szukaj'} onPress={() => { this.onButtonPressed() }}></Button>
-                </View>
-                <View style={styles.listView}>
-                    <FlatList
-                        data={ this.state.records }
-                        renderItem={({item}) => <Text>{item}</Text>}
-                    />
-                </View>
-                <View>
-                    <Text>{ JSON.stringify(this.state.records) }</Text>
-                </View>
+            <View>
+                <SearchBar
+                    noIcon
+                    lightTheme
+                    placeholder='Tytuł, autor'
+                    onChangeText={(text) => this.searchingPhrase = text}
+                />
+                <Button
+                    // disabled={(this.state.isDisSearchingButton)}
+                    onPress={() => { this.onButtonPressed() }}
+                    title='Szukaj' />
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    listView: {
-      flex: 1
-    },
-    container: {
-        display: 'flex',
-        justifyContent: 'flex-start',
-        borderWidth: 1,
-        borderColor: '#000',
-        borderStyle: 'solid',
-        minHeight: 100
-    },
-    input: {
-        minHeight: 15,
-        borderColor: '#000',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        minWidth: 150,
-        paddingLeft: 5,
-        paddingVertical: 5,
-        marginBottom: 5,
-        textAlign: 'center',
-    },
-    button: {
 
-    }
 });
