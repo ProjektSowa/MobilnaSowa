@@ -9,7 +9,7 @@ interface NavigateProps {
 class HomeComponent extends Component<NavigateProps, any>{
     constructor(props : any) {
         super(props)
-        console.log(props);
+        alert("Hej")
     }
 
     render() {

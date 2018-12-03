@@ -121,7 +121,7 @@ export class AuthComponent extends React.Component<AuthProps, AuthState>{
             return <View/>
         } else {
             return (
-                <ImageBackground style={styles.background} source={require('../../assets/images/psw-bg.jpg')}>
+                <ImageBackground style={styles.background} source={require('../../../assets/images/psw-bg.jpg')}>
                     <View style={styles.container}>
                         <View style={styles.textContainer}>
                             <Text style={[styles.textStyle, styles.textCenter, styles.textBold]}>{lang.zaloguj}</Text>

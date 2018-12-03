@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import RootStack from './Navigation'
-import {store} from "./src/Services/Redux/store";
+import {store} from "./Services/Redux/store";
 import {Provider} from "react-redux";
-import SearchComponent from "./src/components/SearchComponent";
+import SearchComponent from "./components/SearchComponent";
 import {NavigationScreenProp} from "react-navigation";
-import HomeComponent from "./src/components/HomeComponent/HomeComponent";
+import HomeComponent from "./components/HomeComponent/HomeComponent";
 
 interface NavigateProps {
     navigation: NavigationScreenProp<any, any>
@@ -14,7 +14,6 @@ interface NavigateProps {
 class App extends Component<NavigateProps, any>{
     constructor(props : any) {
         super(props)
-        console.log(props);
     }
 
     render() {

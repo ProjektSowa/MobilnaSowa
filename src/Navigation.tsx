@@ -1,8 +1,8 @@
 import {createStackNavigator} from "react-navigation";
-import AuthComponent from "./src/components/AuthComponent/AuthComponent";
-import SecondView from "./src/components/secondview";
-import SearchComponent from "./src/components/SearchComponent";
-import HomeComponent from "./src/components/HomeComponent/HomeComponent";
+import AuthComponent from "./components/AuthComponent/AuthComponent";
+import SecondView from "./components/secondview";
+import SearchComponent from "./components/SearchComponent";
+import HomeComponent from "./components/HomeComponent/HomeComponent";
 
 const RootStack = createStackNavigator({
         Home: { screen: HomeComponent },
