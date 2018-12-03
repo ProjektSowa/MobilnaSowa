@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, TextInput, View, FlatList, ScrollViewComponent} from 'react-native';
 import {sendRequest} from "../Services/Redux/endpointConnection";
-import {SearchBar, Button, Icon} from "react-native-elements";
+import {SearchBar, Button} from "react-native-elements";
 
 type Props = {}
 
@@ -27,7 +27,7 @@ export default class SearchComponent extends Component <Props, {records : [], is
             await this.getWordPermaLink(keyWords)
             await this.retreivePage()
         }
-        this.isDisSearchingButton = false
+        // this.setState({isDisSearchingButton: false})
     }
 
     getWordPermaLink = async (keyWords : Array<any>) => {
@@ -62,7 +62,7 @@ export default class SearchComponent extends Component <Props, {records : [], is
                     noIcon
                     lightTheme
                     placeholder='Tytuł, autor'
-                    onChangeText={(text) => this.searchingPhrase = text}
+                    // onChangeText={(text) => this.searchingPhrase = text}
                 />
                 <Button
                     // disabled={(this.state.isDisSearchingButton)}
