@@ -1,25 +1,30 @@
 import {authenticate} from "../../Services/Redux/endpointConnection";
 
-interface Authenticate {
-    type : "AUTHENTICATE"
+export enum SessionTypes {
+	ACCOUNT_LINK = "AccountLink",
+    LOG_OUT = "LOGOUT"
+}
+
+interface IAccountLink {
+    type : SessionTypes.ACCOUNT_LINK
     payload: Promise<any>
 }
 
 interface Logout {
-    type : "LOGOUT"
+    type : SessionTypes.LOG_OUT
 }
 
-export type SessionAction = Authenticate | Logout;
+export type SessionAction = IAccountLink | Logout;
 
-export function Auth(user: string, pass: string): Authenticate{
+export function Auth(user: string, pass: string): IAccountLink{
     return {
-        type : "AUTHENTICATE",
+        type : SessionTypes.ACCOUNT_LINK,
         payload: authenticate(user, pass)
     }
 }
 
 export function logout(): Logout{
     return {
-        type : "LOGOUT"
+        type : SessionTypes.LOG_OUT
     }
 }

@@ -13,7 +13,7 @@ export function sendRequest(requestData : any[]){
 export function authenticate(login : string, password: string){
     return execute(
         axios.post(api_path, extendRequestWithAuth(
-            ["AccountLink", [login, password, login, login]]
+            [["AccountLink", [login, password, login, login]]]
         )),
         ["AccountLink"]
     )
@@ -38,7 +38,9 @@ function execute(requestPromise: Promise<any>, requestName : string[]): Promise<
                 }
             })
 
-            return Promise.resolve(temp)
+	        console.log(temp);
+
+	        return Promise.resolve(temp)
         })
         .catch((error)=>{
             console.log('error: ' + error)

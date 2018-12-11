@@ -1,16 +1,28 @@
-import {createStackNavigator} from "react-navigation";
+import {createStackNavigator, createSwitchNavigator, createAppContainer} from "react-navigation";
 import AuthComponent from "./components/AuthComponent/AuthComponent";
-import SecondView from "./components/secondview";
 import SearchComponent from "./components/SearchComponent";
 import HomeComponent from "./components/HomeComponent/HomeComponent";
+import {LoadingScreen} from "./components/BootstrapComponent/BootstrapComponent";
+import * as React from "react";
+import {Body, Button, Header, Icon, Left, Title} from "native-base";
 
-const RootStack = createStackNavigator({
-        Home: { screen: HomeComponent },
-        Auth: { screen: AuthComponent },
-        SearchComponent: { screen: SearchComponent }
-    },
-    {
-        initialRouteName: 'Home'
-    });
+const AppStack = createStackNavigator({
+		Home: HomeComponent,
+		SearchComponent: SearchComponent,
+	},{
+		initialRouteName: 'Home',
+		headerMode: "none"
+	});
 
-export default RootStack;
+const AuthStack = createStackNavigator({SignInScreen:  AuthComponent})
+
+
+export default createAppContainer(createSwitchNavigator({
+		LoadingScreen: LoadingScreen,
+		App : AppStack,
+		Auth : AuthStack
+	},{
+		initialRouteName: 'LoadingScreen',
+		backBehavior: "none",
+	})
+)
