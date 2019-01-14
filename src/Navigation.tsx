@@ -5,6 +5,7 @@ import HomeComponent from "./components/HomeComponent/HomeComponent";
 import {LoadingScreen} from "./components/BootstrapComponent/BootstrapComponent";
 import * as React from "react";
 import {Body, Button, Header, Icon, Left, Title} from "native-base";
+import {NewsComponent} from "./components/NewsComponent/NewsComponent";
 
 const AppStack = createStackNavigator({
 		Home: HomeComponent,
@@ -19,6 +20,7 @@ const AuthStack = createStackNavigator({SignInScreen:  AuthComponent})
 
 export default createAppContainer(createSwitchNavigator({
 		LoadingScreen: LoadingScreen,
+		News: NewsComponent,
 		App : AppStack,
 		Auth : AuthStack
 	},{

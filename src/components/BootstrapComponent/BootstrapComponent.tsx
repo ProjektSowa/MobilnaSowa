@@ -10,6 +10,9 @@ interface NavigateProps {
 export class LoadingScreen extends React.Component<NavigateProps, any> {
 	constructor(props : NavigateProps) {
 		super(props);
+	}
+
+	componentDidMount(){
 		this._bootstrapAsync();
 	}
 
@@ -19,7 +22,7 @@ export class LoadingScreen extends React.Component<NavigateProps, any> {
 
 		// This will switch to the App screen or Auth screen and this loading
 		// screen will be unmounted and thrown away.
-		this.props.navigation.navigate(userToken ? 'App' : 'Auth')
+		this.props.navigation.navigate('News')
 
 	};
 

@@ -15,6 +15,7 @@ export class App extends Component<NavigateProps, any>{
         super(props)
     }
     render() {
+        console.log("hello")
         return (
             <Provider store={store}>
                 <RootStack/>

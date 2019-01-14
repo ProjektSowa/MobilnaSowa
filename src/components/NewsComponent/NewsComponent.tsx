@@ -58,8 +58,6 @@ let getNewsHrefs = function(nodes: Node[]) {
   rawNewsHrefs.forEach(rawNewsHref => {
     let matches = rawNewsHref.match(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})/);
     if (matches) {
-      // Wiem jakie to jest brzydkie ale nie mogłem znaleźć innego sposobu na zmianę &amp; na & ;)
-      // Regex zawiódł na tym polu
       let url = matches[0].substr(0, 45).concat(matches[0].substr(49, matches[0].length - 51));
       newsHrefs.push(url);
     }
@@ -74,16 +72,16 @@ interface DataItem {
   href: string,
 }
 
-interface P {
+interface NewsProps {
 
 }
 
-interface S {
+interface IState {
   data: DataItem[],
 }
 
-export default class App extends Component<P, S> {
-  constructor(props: any) {
+export class NewsComponent extends Component<NewsProps, IState> {
+  constructor(props: NewsProps) {
     super(props);
 
     this.state = {
