@@ -147,11 +147,16 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     minHeight: 180,
-    padding: '2%',
+    padding: '1%',
     borderWidth: 1,
+    marginBottom: '1%',
+    marginLeft: '1%',
+    marginRight: '1%',
+    backgroundColor:'#eeffdd',
   },
   image: {
     width: '33%',
+    marginBottom: '1%',
   },
   text: {
     fontSize: 20,
