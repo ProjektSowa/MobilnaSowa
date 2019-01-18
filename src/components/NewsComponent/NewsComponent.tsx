@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, View, FlatList, Image, Text, TouchableOpacity, Linking} from 'react-native';
 import {parse, HTMLElement, Node} from 'node-html-parser';
 import {Button, Fab, Icon} from "native-base";
+import {NavigationScreenProp} from "react-navigation";
+import {connect} from "react-redux";
 
 let url = "http://testsowa.pswbp.pl/";
 
@@ -74,7 +76,8 @@ interface DataItem {
 }
 
 interface NewsProps {
-
+	isLogged: boolean
+	navigation: NavigationScreenProp<any, any>
 }
 
 interface IState {
@@ -82,13 +85,13 @@ interface IState {
     fabActive : boolean
 }
 
-export class NewsComponent extends Component<NewsProps, IState> {
+class NewsComponent extends Component<NewsProps, IState> {
   constructor(props: NewsProps) {
     super(props);
 
     this.state = {
       data: [],
-        fabActive : false
+      fabActive : false
     };
 
     getHtmlFromUrl(url)
@@ -143,16 +146,34 @@ export class NewsComponent extends Component<NewsProps, IState> {
 	        direction="up"
 	        containerStyle={{ }}
 	        style={{ backgroundColor: '#5067FF' }}
-	        position="bottomRight">
-	        <Icon name="share" />
-	        <Button style={{ backgroundColor: '#34A34F' }}>
-		        <Icon name="logo-whatsapp" />
+	        position="bottomRight"
+            onPress={() => this.setState({fabActive: !this.state.fabActive})}>
+	        <Icon name="info-circle" />
+	        <Button style={{ backgroundColor: '#34A34F' }} onPress={()=> this.props.navigation.navigate('SearchComponent')}>
+		        <Icon name="search" />
+	        </Button>
+	        <Button style={{ backgroundColor: '#00dcff' }} onPress={()=> {
+	          if(this.props.isLogged){
+		          this.props.navigation.navigate('Auth')
+              } else {
+		          this.props.navigation.navigate('Auth')
+              }
+	        }}>
+		        <Icon name="login" />
 	        </Button>
         </Fab>
       </View>
     );
   }
 }
+
+function mapStateToProps({session} : any, ownProps: any){
+	return {
+		isLogged : session.isLogged
+	}
+}
+
+export default connect(mapStateToProps)(NewsComponent)
 
 const styles = StyleSheet.create({
   container: {
