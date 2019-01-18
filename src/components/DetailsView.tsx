@@ -9,14 +9,18 @@ interface NavigateProps {
     lang : any
     navigation: NavigationScreenProp<any, any>
 }
-
+let book:Book
 export default class DetailsView extends React.Component<NavigateProps,any>{
-    book:Book
+
+
     constructor(props : any) {
         super(props);
+        const { navigation } = this.props
+        book = navigation.getParam('item');
+
         this.state =
             {
-                tableTitle: ['Tytuł', 'Autor', 'Wydawnictwo', 'ISBN'],
+                tableTitle: ['Tytuł', 'Autor', 'Wydawnictwo', 'ISBN','Dostępne'],
                 tableData: [
 
                 ]
@@ -24,29 +28,42 @@ export default class DetailsView extends React.Component<NavigateProps,any>{
 
     }
 
+    borrowClick(){
+
+        if(book.borrowBook[0].availableBooks > 0)
+        {
+            console.log('Rezerwuje')
+            book.borrowBook[0].availableBooks - 1;
+
+        }
+    }
     render() {
-        const { navigation } = this.props
-        console.log(this.book);
-        this.book = navigation.getParam('item');
-        this.state.tableData.push(new Array(this.book.title))
-        this.state.tableData.push(new Array(this.book.author))
-        this.state.tableData.push(new Array(this.book.publisher))
-        this.state.tableData.push(new Array(this.book.ISBN))
 
+        console.log(book);
+        this.state.tableData.push(new Array(book.title))
+        this.state.tableData.push(new Array(book.author))
+        this.state.tableData.push(new Array(book.publisher))
+        this.state.tableData.push(new Array(book.ISBN))
+        console.log(book.borrowBook)
+        this.state.tableData.push(new Array(book.borrowBook[0].availableBooks.toString()))
         const state = this.state;
-
-
 
         return (
             <View>
 
                 <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
                     <TableWrapper style={styles.wrapper}>
-                        <Col data={state.tableTitle} style={styles.title} heightArr={[34,28,34,28]}  textStyle={styles.text}/>
-                        <Rows data={state.tableData} flexArr={[1, 2]} heightArr={[34,28,34,28]} textStyle={styles.text}/>
+                        <Col data={state.tableTitle} style={styles.title} heightArr={[34,28,34,28,28]}  textStyle={styles.text}/>
+                        <Rows data={state.tableData} flexArr={[1, 2]} heightArr={[34,28,34,28,28]} textStyle={styles.text}/>
                     </TableWrapper>
                 </Table>
-                <Text>{this.book.description}</Text>
+                <Button
+                    onPress={this.borrowClick}
+                    title="Zarezerwuj"
+                    color="#c8e1ff"
+
+                />
+                <Text>{book.description}</Text>
             </View>
         )
     }
