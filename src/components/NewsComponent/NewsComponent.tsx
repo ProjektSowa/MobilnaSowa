@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, FlatList, Image, Text, TouchableOpacity, Linking} from 'react-native';
 import {parse, HTMLElement, Node} from 'node-html-parser';
+import {Button, Fab, Icon} from "native-base";
 
 let url = "http://testsowa.pswbp.pl/";
 
@@ -78,6 +79,7 @@ interface NewsProps {
 
 interface IState {
   data: DataItem[],
+    fabActive : boolean
 }
 
 export class NewsComponent extends Component<NewsProps, IState> {
@@ -86,6 +88,7 @@ export class NewsComponent extends Component<NewsProps, IState> {
 
     this.state = {
       data: [],
+        fabActive : false
     };
 
     getHtmlFromUrl(url)
@@ -104,9 +107,9 @@ export class NewsComponent extends Component<NewsProps, IState> {
       return data;
     })
     .then(d => {
-      this.setState(state => ({
+      this.setState({
         data: d,
-      }));
+      });
     });
   }
 
@@ -135,6 +138,17 @@ export class NewsComponent extends Component<NewsProps, IState> {
           }
           keyExtractor = {(item) => item.title}
         />
+        <Fab
+	        active={this.state.fabActive}
+	        direction="up"
+	        containerStyle={{ }}
+	        style={{ backgroundColor: '#5067FF' }}
+	        position="bottomRight">
+	        <Icon name="share" />
+	        <Button style={{ backgroundColor: '#34A34F' }}>
+		        <Icon name="logo-whatsapp" />
+	        </Button>
+        </Fab>
       </View>
     );
   }
