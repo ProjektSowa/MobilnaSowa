@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import RootStack from './Navigation'
 import {store} from "./src/Services/Redux/store";
 import {Provider} from "react-redux";
-import SearchComponent from "./src/components/SearchComponent";
+import BookedBooksComponent from "./src/components/BookedBooksComponent";
 export class App extends Component{
     constructor(props : any) {
         super(props)
@@ -12,7 +12,7 @@ export class App extends Component{
     render() {
         return (
             <View>
-                <SearchComponent/>
+                <BookedBooksComponent/>
             </View>
     );
     }
