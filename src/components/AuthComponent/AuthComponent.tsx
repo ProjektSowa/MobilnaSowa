@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, ImageBackground, Button, TextInput, View} from 'react-native';
+import {StyleSheet, Text, ImageBackground, TextInput, View} from 'react-native';
 import { NavigationScreenProp } from 'react-navigation'
-// import {withTranslation, IWithTranslationProps} from "../Services/Translate/WithTranslate";
 import withTranslation, {IWithTranslationProps} from '../../Services/Translate/WithTranslate'
 import {Dispatch} from "redux";
 import * as actions from "./actions";
 import {connect} from "react-redux";
+import {Button} from "native-base";
 
 
 
 interface AuthState {
     username: string,
     password: string,
-    json: any
 }
 
 interface AuthProps extends IWithTranslationProps{
@@ -29,109 +28,31 @@ export class AuthComponent extends React.Component<AuthProps, AuthState>{
         this.state = {
             username: 'testsowa@pswbp.pl',
             password: 'Test.Sowa.1',
-            json: {}
         }
     }
-    // onButtonPressed = () => {
-    //     this.checkIfUserExists()
-    // }
-    //
-    // checkIfUserExists = () => {
-    //     fetch('http://testsowa.pswbp.pl/capi.php', {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             "auth": [
-    //                 1,
-    //                 "urn:uuid:4dd12e7a-7572-4829-b0fe-e13fef752fda",
-    //                 "#iqvbW!JhHch+TW._(+z",
-    //                 "42699@lic528.sowa"
-    //             ],
-    //             "exec": [
-    //                 ["AccountCheck", [this.state.username]]
-    //             ]
-    //         }),
-    //     })
-    //     .then((response) => {
-    //         if(!response.ok)
-    //             throw new Error('Network response was not ok.')
-    //
-    //         return response.json()
-    //     })
-    //     .then((responseJson) => {
-    //         if (responseJson[0].status === 200)
-    //             this.loginUser()
-    //         else
-    //             alert('Zly login lub hasło')
-    //     })
-    //     .catch((error) => {
-    //         console.log(error)
-    //     })
-    // }
-
-    // loginUser = () => {
-    //     fetch('http://testsowa.pswbp.pl/capi.php', {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             "auth": [
-    //                 1,
-    //                 "urn:uuid:4dd12e7a-7572-4829-b0fe-e13fef752fda",
-    //                 "#iqvbW!JhHch+TW._(+z",
-    //                 "42699@lic528.sowa"
-    //             ],
-    //             "exec": [
-    //                 ["AccountAuth", [this.state.username, this.state.password]]
-    //             ]
-    //         }),
-    //     })
-    //     .then((response) => {
-    //         if(!response.ok)
-    //             throw new Error('Network response was not ok.')
-    //
-    //         return response.json()
-    //     })
-    //     .then((responseJson) => {
-    //         if (responseJson[0].status === 200) {
-    //             this.setState({json: responseJson})
-    //             console.log(responseJson)
-    //             this.props.navigation.navigate('Second', {json: this.state.json[0].data.name})
-    //         }
-    //         else
-    //             alert('Zły login lub hasło')
-    //     })
-    //     .catch((error) => {
-    //         console.log(error)
-    //     })
-    // }
 
 
 
     render() {
         let { lang, isLogged, authenticate } = this.props
-
+	    console.log(isLogged);
         if(isLogged){
-            this.props.navigation.navigate('Second')
+
+	        this.props.navigation.navigate('App')
             return <View/>
         } else {
             return (
-                <ImageBackground style={styles.background} source={require('../../assets/images/psw-bg.jpg')}>
+                <ImageBackground style={styles.background} source={require('../../../assets/images/psw-bg.jpg')}>
                     <View style={styles.container}>
                         <View style={styles.textContainer}>
-                            <Text style={[styles.textStyle, styles.textCenter, styles.textBold]}>{lang.zaloguj}</Text>
+                            <Text style={[styles.textStyle, styles.textCenter, styles.textBold]}>{lang.header}</Text>
                         </View>
                         <View style={styles.inputContainer}>
                             <TextInput onChangeText={(username) => this.setState({username})}  value={this.state.username} style={styles.input} placeholder={lang.email}/>
-                            <TextInput secureTextEntry={true} onChangeText={(password) => this.setState({password})} value={this.state.password} style={styles.input} placeholder={lang.haslo}/>
-                            <View style={styles.buttonStyle}>
-                                <Button color={'#fff'} title={lang.login} onPress={() => { authenticate(this.state.username, this.state.password) }}></Button>
-                            </View>
+                            <TextInput secureTextEntry={true} onChangeText={(password) => this.setState({password})} value={this.state.password} style={styles.input} placeholder={lang.password}/>
+                            <Button block onPress={() => { authenticate(this.state.username, this.state.password) }}>
+                                <Text> { lang.submit } </Text>
+                            </Button>
                         </View>
                     </View>
                 </ImageBackground>

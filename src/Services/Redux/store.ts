@@ -13,6 +13,7 @@ export const store : Store = createStore<StoreState.All, any, any, any> (
 export namespace StoreState {
     export type Session = {
         isLogged : boolean
+        authData : any
     }
 
     export type Language = {

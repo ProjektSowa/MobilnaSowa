@@ -1,10 +1,13 @@
 import {StoreState} from "./store";
 import {languages} from "../Translate/Translate";
-import {NativeModules, Platform} from "react-native";
+import {AsyncStorage, NativeModules, Platform} from "react-native";
+import {SessionTypes} from "../../components/AuthComponent/actions";
 
-export function initSessionState() {
-    return {
-        isLogged : false
+const initSessionState = () => {
+    const authData = "";
+	return {
+        isLogged : !!authData,
+        authData : authData
     }
 }
 export function initLanguageState() {
@@ -21,17 +24,13 @@ export const session = (state : StoreState.Session, action : any) => {
     }
 
     switch(action.type) {
-        case "AUTHENTICATE_FULFILLED" : {
-            alert("FULFILLED")
-            return {
+        case SessionTypes.ACCOUNT_LINK + "_FULFILLED" : {
+            const authData = action.payload[SessionTypes.ACCOUNT_LINK]
+	        return {
                 ...state,
                 isLogged: true,
-                authData: {...action.payload}
+                authData: authData[0]
             }
-        }
-        case "AUTHENTICATE_REJECTED" : {
-            alert("REJECTED")
-            return state
         }
         default :
             return state

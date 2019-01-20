@@ -1,21 +1,30 @@
 export const languages: { [key: string]: any } = {
     pl_PL: {
+	    homecomponent: {
+	    	title: "Strona Główna"
+	    },
         authcomponent: {
-            login: 'zaloguj',
-            zalogu: 'Zaloguj',
+            submit: 'Zaloguj',
+	        header: 'Zaloguj Się',
             email: 'Adres email',
-            haslo: 'Haslo'
+	        password: 'Haslo'
         }
     },
     en_US: {
+    	homecomponent: {
+		    title: "Home Page"
+	    },
         authcomponent: {
-            login: 'login',
-            zaloguj: 'Log in',
+	        submit: 'Log In',
+            header: 'Log In',
             email: 'Email address',
-            haslo: 'Password'
+            password: 'Password'
         }
     },
     ru_RU: {
+	    homecomponent: {
+		    title: "Strona Główna"
+	    },
         authcomponent: {
 
         }
