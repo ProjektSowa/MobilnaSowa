@@ -4,6 +4,7 @@ import RootStack from './Navigation'
 import {store} from "./Services/Redux/store";
 import {Provider} from "react-redux";
 import {NavigationScreenProp, NavigationScreenProps} from "react-navigation";
+import BookedBooksComponent from "./components/BookedBooksComponent";
 
 interface NavigateProps {
     navigation: NavigationScreenProp<any, any>
@@ -17,9 +18,10 @@ export class App extends Component<NavigateProps, any>{
     render() {
         console.log("hello")
         return (
-            <Provider store={store}>
-                <RootStack/>
-            </Provider>
+            //<Provider store={store}>
+           //     <RootStack/>
+           // </Provider>
+            <BookedBooksComponent/>
     );
     }
 }
