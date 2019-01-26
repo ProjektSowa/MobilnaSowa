@@ -13,19 +13,19 @@ export default class BookedBooksComponent extends Component <Props,any>{
     books : Array<Book> = new Array<Book>();
     rawBooks : Array<rawBook> = new Array<rawBook>();
 
-    key = ""
-    user_id = ""
+    key = "";
+    user_id = "";
 
-    validTo = ""
-    validFrom = ""
-    isConfirmed = false
+    validTo = "";
+    validFrom = "";
+    isConfirmed = false;
 
-    booksBooked = 0
-    booksLoaned = 0
+    booksBooked = 0;
+    booksLoaned = 0;
 
 
     constructor(props : Props) {
-        super(props)
+        super(props);
 
         this.state = {
                 myText: '', tableTitle: ['Tytuł', 'Autor', 'Wydawnictwo', 'ISBN', "Opis"]
@@ -33,9 +33,9 @@ export default class BookedBooksComponent extends Component <Props,any>{
         };
     }
     onButtonPressed = async () => {
-            await this.accountLink()
+            await this.accountLink();
             await this.accountStatus()
-    }
+    };
 
     accountLink = async () => {
         let response = await sendRequest([
@@ -50,9 +50,9 @@ export default class BookedBooksComponent extends Component <Props,any>{
             ]
         ]);
 
-        this.key = response.AccountLink[0].key
+        this.key = response.AccountLink[0].key;
         this.user_id = response.AccountLink[0].user_id
-    }
+    };
 
     accountStatus = async () => {
         let response = await sendRequest([
@@ -67,37 +67,23 @@ export default class BookedBooksComponent extends Component <Props,any>{
 
         console.log(response);
 
-        this.validTo = response.AccountStatus[0].validto
-        this.validFrom = response.AccountStatus[0].validfrom
-        this.isConfirmed = response.AccountStatus[0].confirmed
-        this.booksLoaned = response.AccountStatus[0].loaned.length
-        this.booksBooked = response.AccountStatus[0].booked.length
+        this.validTo = response.AccountStatus[0].validto;
+        this.validFrom = response.AccountStatus[0].validfrom;
+        this.isConfirmed = response.AccountStatus[0].confirmed;
+        this.booksLoaned = response.AccountStatus[0].loaned.length;
+        this.booksBooked = response.AccountStatus[0].booked.length;
 
-        //console.log(response.AccountStatus[0].loaned[0])
-
-        //await this.retreiveRecords();
-        await this.getListofRecords(response)
+        await this.getListofRecords(response);
         //await this.convertResponse(response)
         this.updateText()
-    }
+    };
 
     getListofRecords(response: any){
-        //let arrayOfResponses = new Array<Object>();
-        //let newresponse;
-        for (let k = 0; k < response.AccountStatus[0].loaned.length; k++){
-            //arrayOfResponses.push(
-            //let myBooks =
-                this.retreiveRecords(response.AccountStatus[0].loaned[k].rec_id,response.AccountStatus[0].loaned[k].ipub_id)
-            //console.log(myBooks)
+        for (let k = 0; k < response.AccountStatus[0].loaned.length; k++)
+        {
+            this.retreiveRecords(response.AccountStatus[0].loaned[k].rec_id,response.AccountStatus[0].loaned[k].ipub_id);
             console.log(this.books);
-        //)
-            }
-        //console.log(arrayOfResponses);
-        //console.log(arrayOfResponses[0]);
-        //console.log(arrayOfResponses[0]._55.RetrieveRecords[0]);
-        //this.convertResponse(response);
-
-        //this.updateText()
+        }
     }
 
     retreiveRecords = async (rec_id: string, ipub_id: string) => {
@@ -111,20 +97,12 @@ export default class BookedBooksComponent extends Component <Props,any>{
                 [[rec_id,ipub_id],"json","marc21"]
             ]
         ]);
-
-        //console.log(response);
-
-        //console.log(response.RetrieveRecords[0].length);
-        //console.log(response.RetrieveRecords[0][0].view);
-        //console.log(response.RetrieveRecords[1][0].view.data);
-
-        //return
         this.convertResponse(response);
-    }
+    };
 
     updateText = () => {
         this.setState({myText: ''})
-    }
+    };
 
     convertResponse(response: any) {
         let arrayOfBooks = new Array<Book>();
@@ -134,7 +112,7 @@ export default class BookedBooksComponent extends Component <Props,any>{
             let loans = response.RetrieveRecords[0][k].view;
             let arrayBorrow = new Array<BorrowBook>();
             for (let i = 0; i < loans.length; i++){
-                let borrowBook = new BorrowBook(loans[i][0], loans[i][1], loans[i][2], loans[i][3], loans[i][4], loans[i][5], loans[i][6], loans[i][7])
+                let borrowBook = new BorrowBook(loans[i][0], loans[i][1], loans[i][2], loans[i][3], loans[i][4], loans[i][5], loans[i][6], loans[i][7]);
                 arrayBorrow.push(borrowBook);
             }
 
@@ -206,27 +184,9 @@ export default class BookedBooksComponent extends Component <Props,any>{
             }
             book = new Book(author, title, publisher, ISBN, description, arrayBorrow);
             arrayOfBooks.push(book);
-            //arrayOfBooks.join()
-
         }
-        //return arrayOfBooks;
-      //  console.log(arrayOfBooks);
-
         this.books = arrayOfBooks;
-
-       //this.books.push(arrayOfBooks);
-       // console.log(this.books);
-       this.updateText()
-
-
-        //<FlatList data={this.books}
-        //renderItem={({item}) => <Text>{item.title} {item.ISBN}</Text>}
-        //keyExtractor={(item, isbn) => isbn.toString()}
-        ///>
-    }
-
-    updateArray(){
-
+        this.updateText()
     }
 
     render() {
@@ -258,8 +218,9 @@ export default class BookedBooksComponent extends Component <Props,any>{
 
                           <ListItem onPress={() =>
                           {
-                              alert("\n----------\nBook Title\n----------\n" + item.title + "\n----------\nAuthor\n----------\n" + item.author + "\n----------\nDescribtion\n----------\n" + item.description );
-                              //return this.props.navigation.navigate('DetailsView',{'item':item});
+                              alert("\n----------\nBook Title\n----------\n" + item.title +
+                                  "\n----------\nAuthor\n----------\n" + item.author +
+                                  "\n----------\nDescribtion\n----------\n" + item.description );
                           }}
                                     title={item.title} />}
                       keyExtractor={(item, isbn) => isbn.toString()}
