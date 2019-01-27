@@ -10,7 +10,16 @@ export function sendRequest(requestData : any[]){
     )
 }
 
-export function authenticate(login : string, password: string){
+export function accountAuth(login : string, password: string){
+    return  execute(
+        axios.post(api_path, extendRequestWithAuth(
+            [["AccountAuth", [login, password]]]
+        )),
+        ["AccountAuth"]
+    )
+}
+
+export function accountLink(login : string, password: string){
     return execute(
         axios.post(api_path, extendRequestWithAuth(
             [["AccountLink", [login, password, login, login]]]
@@ -44,10 +53,6 @@ function execute(requestPromise: Promise<any>, requestName : string[]): Promise<
         })
         .catch((error)=>{
             console.log('error: ' + error)
-            // if(response.status == 403) {
-            //     alert("Bark Autentykacji")
-            //     // store.dispatch(()=> {})
-            // }
         })
 
 }

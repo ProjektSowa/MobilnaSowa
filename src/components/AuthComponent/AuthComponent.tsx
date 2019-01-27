@@ -16,7 +16,8 @@ interface AuthState {
 
 interface AuthProps extends IWithTranslationProps{
     navigation: NavigationScreenProp<any, any>,
-    authenticate: (p: string, s: string) => void
+    authenticate: (p: string, s: string) => void,
+    authenticate2: (p: string, s: string) => void,
     isLogged : boolean
 }
 
@@ -34,7 +35,7 @@ export class AuthComponent extends React.Component<AuthProps, AuthState>{
 
 
     render() {
-        let { lang, isLogged, authenticate } = this.props
+        let { lang, isLogged, authenticate,authenticate2  } = this.props
 	    console.log(isLogged);
         if(isLogged){
 
@@ -50,7 +51,7 @@ export class AuthComponent extends React.Component<AuthProps, AuthState>{
                         <View style={styles.inputContainer}>
                             <TextInput onChangeText={(username) => this.setState({username})}  value={this.state.username} style={styles.input} placeholder={lang.email}/>
                             <TextInput secureTextEntry={true} onChangeText={(password) => this.setState({password})} value={this.state.password} style={styles.input} placeholder={lang.password}/>
-                            <Button block onPress={() => { authenticate(this.state.username, this.state.password) }}>
+                            <Button block onPress={() => { authenticate(this.state.username, this.state.password),authenticate2(this.state.username, this.state.password) }}>
                                 <Text> { lang.submit } </Text>
                             </Button>
                         </View>
@@ -70,7 +71,8 @@ function mapStateToProps({session} : any, ownProps: any){
 
 function mapDispatchToProps(dispatch : Dispatch<actions.SessionAction>){
     return {
-        authenticate: (p: string, s: string) => dispatch(actions.Auth(p, s))
+        authenticate: (p: string, s: string) => dispatch(actions.Auth(p, s)),
+        authenticate2: (p: string, s: string) => dispatch(actions.Auth2(p, s))
     }
 }
 

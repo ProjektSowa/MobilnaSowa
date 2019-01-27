@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, FlatList, Image, Text, TouchableOpacity, Linking} from 'react-native';
 import {parse, HTMLElement, Node} from 'node-html-parser';
+import {Button, Fab, Icon} from "native-base";
+import {NavigationScreenProp} from "react-navigation";
+import {StoreState} from "../../Services/Redux/store";
+import {connect} from "react-redux";
+import ProfileComponent from "../ProfileComponent";
 
 let url = "http://testsowa.pswbp.pl/";
 
@@ -75,19 +80,22 @@ interface DataItem {
 }
 
 interface P {
-
+	navigation: NavigationScreenProp<any, any>
+    isLogged: boolean
 }
 
 interface S {
   data: DataItem[],
+    isFabActive : boolean
 }
 
-export default class App extends Component<P, S> {
+class NewsComponent extends Component<P, S> {
   constructor(props: any) {
     super(props);
 
     this.state = {
       data: [],
+      isFabActive: false
     };
 
     getHtmlFromUrl(url)
@@ -137,10 +145,36 @@ export default class App extends Component<P, S> {
           }
           keyExtractor = {(item) => item.title}
         />
+        <Fab
+	        active={this.state.isFabActive}
+	        direction="up"
+	        position="bottomRight"
+	        onPress={() => this.setState({ isFabActive: !this.state.isFabActive })}
+        >
+	        <Icon name={this.state.isFabActive? "remove": "add"} />
+	        <Button style={{ backgroundColor: '#34A34F' }}
+                    onPress={(e) => this.props.navigation.navigate(this.props.isLogged ? 'Profile': 'Auth')}
+            >
+		        <Icon name="person" />
+	        </Button>
+	        <Button style={{ backgroundColor: '#3B5998' }}
+                    onPress={(e)=> this.props.navigation.navigate('SearchComponent')}
+            >
+		        <Icon name="search" />
+	        </Button>
+        </Fab>
       </View>
     );
   }
 }
+
+function mapStateToProps({session}: StoreState.All){
+  return {
+	  isLogged: session.isLogged
+  }
+}
+
+export default connect(mapStateToProps)(NewsComponent)
 
 const styles = StyleSheet.create({
   container: {

@@ -14,6 +14,7 @@ export namespace StoreState {
     export type Session = {
         isLogged : boolean
         authData : any
+        authData2 : any
     }
 
     export type Language = {

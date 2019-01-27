@@ -3,12 +3,10 @@ import {languages} from "../Translate/Translate";
 import {AsyncStorage, NativeModules, Platform} from "react-native";
 import {SessionTypes} from "../../components/AuthComponent/actions";
 
-const initSessionState = () => {
-    const authData = "";
-	return {
-        isLogged : !!authData,
-        authData : authData
-    }
+const initSessionState = {
+        isLogged : false,
+        authData : {},
+        authData2 : {}
 }
 export function initLanguageState() {
     if(Platform.OS == "android"){
@@ -18,10 +16,7 @@ export function initLanguageState() {
     }
 }
 
-export const session = (state : StoreState.Session, action : any) => {
-    if (!state) {
-        return initSessionState();
-    }
+export const session = (state : StoreState.Session = initSessionState, action : any) => {
 
     switch(action.type) {
         case SessionTypes.ACCOUNT_LINK + "_FULFILLED" : {
@@ -30,6 +25,13 @@ export const session = (state : StoreState.Session, action : any) => {
                 ...state,
                 isLogged: true,
                 authData: authData[0]
+            }
+        }
+        case SessionTypes.ACCOUNT_AUTH + "_FULFILLED" : {
+            const authData = action.payload[SessionTypes.ACCOUNT_AUTH];
+            return {
+                ...state,
+                authData2: authData[0],
             }
         }
         default :
