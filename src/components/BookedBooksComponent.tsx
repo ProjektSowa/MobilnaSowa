@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
+import {Alert, Button, FlatList, Platform, StyleSheet, Text, View} from 'react-native';
 import {sendRequest} from "../Services/Redux/endpointConnection";
 import {ListItem} from "react-native-elements";
 import {Book, BorrowBook} from "./Book";
@@ -11,7 +11,6 @@ type Props = {
 export default class BookedBooksComponent extends Component <Props,any>{
 
     books : Array<Book> = new Array<Book>();
-    rawBooks : Array<rawBook> = new Array<rawBook>();
 
     key = "";
     user_id = "";
@@ -28,8 +27,7 @@ export default class BookedBooksComponent extends Component <Props,any>{
         super(props);
 
         this.state = {
-                myText: '', tableTitle: ['Tytuł', 'Autor', 'Wydawnictwo', 'ISBN', "Opis"]
-
+            refreshing: false
         };
     }
     onButtonPressed = async () => {
@@ -65,8 +63,6 @@ export default class BookedBooksComponent extends Component <Props,any>{
             ]
         ]);
 
-        console.log(response);
-
         this.validTo = response.AccountStatus[0].validto;
         this.validFrom = response.AccountStatus[0].validfrom;
         this.isConfirmed = response.AccountStatus[0].confirmed;
@@ -74,15 +70,15 @@ export default class BookedBooksComponent extends Component <Props,any>{
         this.booksBooked = response.AccountStatus[0].booked.length;
 
         await this.getListofRecords(response);
-        //await this.convertResponse(response)
+
         this.updateText()
     };
 
     getListofRecords(response: any){
+        this.books = [];
         for (let k = 0; k < response.AccountStatus[0].loaned.length; k++)
         {
             this.retreiveRecords(response.AccountStatus[0].loaned[k].rec_id,response.AccountStatus[0].loaned[k].ipub_id);
-            console.log(this.books);
         }
     }
 
@@ -97,16 +93,19 @@ export default class BookedBooksComponent extends Component <Props,any>{
                 [[rec_id,ipub_id],"json","marc21"]
             ]
         ]);
-        this.convertResponse(response);
+        let book = this.convertResponse(response);
+        this.books.push(book);
     };
 
     updateText = () => {
-        this.setState({myText: ''})
+        this.setState({
+            refresh: !this.state.refresh
+        })
     };
 
-    convertResponse(response: any) {
-        let arrayOfBooks = new Array<Book>();
-        let book;
+    convertResponse(response: any):Book {
+        //let arrayOfBooks = new Array<Book>();
+        let book: Book;
         for (let k = 0; k < response.RetrieveRecords[0].length; k++){
             //loans
             let loans = response.RetrieveRecords[0][k].view;
@@ -183,14 +182,27 @@ export default class BookedBooksComponent extends Component <Props,any>{
                 }
             }
             book = new Book(author, title, publisher, ISBN, description, arrayBorrow);
-            arrayOfBooks.push(book);
         }
-        this.books = arrayOfBooks;
-        this.updateText()
+        // @ts-ignore
+        return book;
     }
 
+    onRefresh = async () => {
+        this.setState({
+            isRefreshing: true
+        });
+
+        this.setState({
+            refresh: !this.state.refresh
+        })
+
+        this.setState({
+            isRefreshing: false
+        });
+    };
+
     render() {
-        return <View>
+        return <View style={styles.container}>
             <Button
                 onPress={() => {
                     this.onButtonPressed()
@@ -212,37 +224,31 @@ export default class BookedBooksComponent extends Component <Props,any>{
                 {"Numbers of Books Loaned: "+this.booksLoaned}
             </Text>
 
+            <FlatList
 
-            <FlatList data={this.books}
+                data={this.books}
+                      extraData={this.state.refresh}
+
                       renderItem={({item}) =>
 
                           <ListItem onPress={() =>
                           {
-                              alert("\n----------\nBook Title\n----------\n" + item.title +
+                              Alert.alert(item.title,
                                   "\n----------\nAuthor\n----------\n" + item.author +
                                   "\n----------\nDescribtion\n----------\n" + item.description );
                           }}
-                                    title={item.title} />}
-                      keyExtractor={(item, isbn) => isbn.toString()}
+                                    title={item.title}
+                          />
+                      }
+                        keyExtractor={item => item.ISBN.toString()}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}
             />
-
-            <Text>
-                {this.state.myText}
-            </Text>
         </View>
     }
 }
-
 const styles = StyleSheet.create({
-
-});
-
-export class rawBook {
-    rec_id: string;
-    ipub_id: string;
-
-    constructor(rec_id: string, ipub_id: string) {
-        this.rec_id = rec_id;
-        this.ipub_id = ipub_id;
+    container: {
+        flex: 1,
     }
-}
+})
